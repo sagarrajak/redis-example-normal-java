@@ -2,6 +2,7 @@ package com.debaterr.app
 
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
+import java.io.Serializable
 
 // Complex data class example
 data class User(
@@ -43,7 +44,7 @@ data class Employee(
 
     @JsonProperty("address")
     val address: Address?
-)
+): Serializable;
 
 data class Address(
     @JsonProperty("street")
