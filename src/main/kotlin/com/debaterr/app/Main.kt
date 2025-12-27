@@ -1,5 +1,6 @@
 package com.debaterr.app
 
+import com.debaterr.app.redisoperation.RedisSetOperationProtobuf
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
@@ -46,41 +47,82 @@ fun deserializeExample() {
 
 fun main() {
     val initJedis = initJedis()
-    val jsonMapper = ObjectMapperConfig.objectMapper;
-    val user = User(
-        id = "123",
-        name = "John Smith",
-        email = "john@example.com",
-        score = 95,
-        department = "Engineering",
-        phoneNumber = "555-1234"
-    )
-    val someOtherUser = SomeOtherUser()
-        .withId(10)
-        .withAge(30)
-        .withName("Sagar")
-        .withEmail("test@gmail.com")
-        .withTags(listOf("test", "test2"))
+//    val jsonMapper = ObjectMapperConfig.objectMapper;
+//    val user = User(
+//        id = "123",
+//        name = "John Smith",
+//        email = "john@example.com",
+//        score = 95,
+//        department = "Engineering",
+//        phoneNumber = "555-1234"
+//    )
+//    val someOtherUser = SomeOtherUser()
+//        .withId(10)
+//        .withAge(30)
+//        .withName("Sagar")
+//        .withEmail("test@gmail.com")
+//        .withTags(listOf("test", "test2"))
+//
+//    val writeValueAsString1 = jsonMapper.writeValueAsString(someOtherUser)
+//    println(writeValueAsString1)
+//    val writeValueAsString = jsonMapper.writeValueAsString(user)
+//    println(writeValueAsString)
+//    deserializeExample();
+//
+//
+//    /// list example
+//    val redisListOperation = RedisListOperation(jedis = initJedis, "testkey")
+//    redisListOperation.listLeftPush("Sagar", "test", "test2");
+//
+//    if(!redisListOperation.contains("rightpush"))
+//        redisListOperation.listRightPush("rightpush")
+//
+//    redisListOperation.listRightPush("rightpush1")
+//    redisListOperation.listRightPush("rightpush1")
+//
+//    for (item in redisListOperation) {
+//        println(item);
+//    }
 
-    val writeValueAsString1 = jsonMapper.writeValueAsString(someOtherUser)
-    println(writeValueAsString1)
-    val writeValueAsString = jsonMapper.writeValueAsString(user)
-    println(writeValueAsString)
-    deserializeExample();
+    val redisSetOperationProtobuf = RedisSetOperationProtobuf<ProtobuffUser>(initJedis, "protokey", ProtobuffUser.parser());
+    val user1 = ProtobuffUser.newBuilder()
+        .setId(1)
+        .setName("User One")
+        .addEmails("user1@example.com")
+        .build()
 
+    val user2 = ProtobuffUser.newBuilder()
+        .setId(2)
+        .setName("User Two")
+        .addEmails("user2@example.com")
+        .build()
 
-    /// list example
-    val redisListOperation = RedisListOperation(jedis = initJedis, "testkey")
-    redisListOperation.listLeftPush("Sagar", "test", "test2");
+    val user3 = ProtobuffUser.newBuilder()
+        .setId(3)
+        .setName("User Three")
+        .addEmails("user3@example.com")
+        .build()
 
-    if(!redisListOperation.contains("rightpush"))
-        redisListOperation.listRightPush("rightpush")
+    val user4 = ProtobuffUser.newBuilder()
+        .setId(4)
+        .setName("User Four")
+        .addEmails("user4@example.com")
+        .build()
 
-    redisListOperation.listRightPush("rightpush1")
-    redisListOperation.listRightPush("rightpush1")
+    val user5 = ProtobuffUser.newBuilder()
+        .setId(5)
+        .setName("User Five")
+        .addEmails("user5@example.com")
+        .build()
 
-    for (item in redisListOperation) {
-        println(item);
+    redisSetOperationProtobuf.add(user1)
+    redisSetOperationProtobuf.add(user2)
+    redisSetOperationProtobuf.add(user3)
+    redisSetOperationProtobuf.add(user4)
+    redisSetOperationProtobuf.add(user5)
+
+    for (user in redisSetOperationProtobuf) {
+        println(user)
     }
 }
 
