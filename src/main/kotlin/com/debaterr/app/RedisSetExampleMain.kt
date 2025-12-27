@@ -1,5 +1,7 @@
 package com.debaterr.app
 
+import com.debaterr.app.redisoperation.RedisSetOperationJson
+
 
 fun main() {
     val employees = listOf(
@@ -61,9 +63,10 @@ fun main() {
     )
     val initJedis = initJedis()
     val objectMapper = ObjectMapperConfig.objectMapper
-    val redisSetOperation = RedisSetOperation<Employee>(initJedis, "somekeystatic", objectMapper, Employee::class.java)
-    redisSetOperation.setAdd(*employees.toTypedArray())
-    redisSetOperation.setAdd(employees[0])
+    val redisSetOperation =
+        RedisSetOperationJson<Employee>(initJedis, "somekeystatic", objectMapper, Employee::class.java)
+    redisSetOperation.add(*employees.toTypedArray())
+    redisSetOperation.add(employees[0])
     print(redisSetOperation.size)
     println(redisSetOperation.contains(employees[1]))
     println(redisSetOperation.contains(employee))

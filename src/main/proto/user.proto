@@ -1,0 +1,11 @@
+syntax = "proto3";
+package com.debaterr.app;
+option java_package = "com.debaterr.app.generated";
+option java_multiple_files = true;
+
+
+message ProtobuffUser {
+  int32 id = 1;
+  string name = 2;
+  repeated string emails = 3;
+}
